@@ -3,6 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 ALCHEMY_KEY = os.getenv("ALCHEMY_KEY")
