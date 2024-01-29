@@ -11,15 +11,12 @@ def get_dataset():
 def tokenize_bytecode(bytecode):
     try:
         enc = tiktoken.get_encoding("cl100k_base")
-        if not isinstance(bytecode, (str, bytes)):  # Ensure valid data type
-            raise TypeError("Input bytecode must be a string or bytes object.")
+        
+        if not isinstance(bytecode, (str, bytes)):  
+            bytecode = str(bytecode)
 
         encoded_tokens = enc.encode(bytecode)
         decoded_bytecode = enc.decode(encoded_tokens)  
-
-        print("Original Bytecode:", bytecode)
-        print("Encoded Tokens:", encoded_tokens)
-        print("Decoded Bytecode:", decoded_bytecode)
 
         return encoded_tokens
     except Exception as e:
@@ -29,9 +26,11 @@ def tokenize_bytecode(bytecode):
 if __name__ == "__main__":
     try:
         df = get_dataset()
-        bytecode_column = df['Bytecode']
 
-        for bytecode in bytecode_column:
-            tokenize_bytecode(bytecode)
+        # Create a new column 'Encoded_Tokens' with the encoded tokens
+        df['Encoded_Tokens'] = df['Bytecode'].apply(tokenize_bytecode)
+        
+        df.to_csv("data_with_tokens.csv", index=False)
+
     except Exception as e:
         print(f"An error occurred: {e}")

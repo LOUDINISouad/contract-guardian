@@ -5,13 +5,17 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from preprocess import tokenize_bytecode
+import json
 
-data = pd.read_csv('data.csv')
 
-X = data.drop('Bytecode', axis=1)  # Features
-y = data['Bytecode']  # Target variable
-X['Bytecode'] = X['Bytecode'].apply(tokenize_bytecode)
+data = pd.read_csv('data_with_tokens.csv')
+y = data["contract_type"] == "valid"
+X = data["Encoded_Tokens"]
 
+print("ooooooooooooooo")
+print(X.apply(lambda s: len(json.loads(s))))
+
+"""
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model = make_pipeline(StandardScaler(), LogisticRegression())
 
@@ -29,4 +33,5 @@ print(f"Accuracy: {accuracy:.4f}")
 print("\nConfusion Matrix:")
 print(conf_matrix)
 print("\nClassification Report:")
-print(classification_rep)
+print(classification_rep) 
+"""
