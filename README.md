@@ -19,7 +19,7 @@ To install [tiktoken](https://github.com/openai/tiktoken) packages use the follo
 py -m pip install tiktoken
 ```
 
-To install [Scikit learn](https://scikit-learn.org/stable/index.html)packages use the following command:
+To install [Scikit learn](https://scikit-learn.org/stable/index.html) packages use the following command:
 ```bash
 py -m pip install scikit-learn
 ```
