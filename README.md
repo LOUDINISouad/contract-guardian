@@ -14,6 +14,16 @@ To keep your package manager for Python, pip, up to date, open a terminal and ru
 py -m pip install --upgrade pip
 ```
 
+To install [tiktoken](https://github.com/openai/tiktoken) packages use the following command:
+```bash
+py -m pip install tiktoken
+```
+
+To install [Scikit learn](https://scikit-learn.org/stable/index.html) packages use the following command:
+```bash
+py -m pip install scikit-learn
+```
+
 ## Usage
 
 To initiate the Contract Guardian program, use the following command:
