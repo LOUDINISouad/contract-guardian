@@ -9,7 +9,7 @@ if __name__ == "__main__":
     df = get_dataset()
    #print(df.columns)
 
-    bytecode_column = df['Bytecode']
+    bytecode_column = df['bytecode']
     for bytecode in bytecode_column:
         print(bytecode)
       

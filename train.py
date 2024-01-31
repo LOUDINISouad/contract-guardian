@@ -4,18 +4,19 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
-from preprocess import tokenize_bytecode
-import json
 
 
-data = pd.read_csv('data_with_tokens.csv')
+
+data = pd.read_csv('data.csv')
 y = data["contract_type"] == "valid"
-X = data["Encoded_Tokens"]
+X = data["padded_arrays"]
 
-print("ooooooooooooooo")
-print(X.apply(lambda s: len(json.loads(s))))
 
-"""
+
+#print("ooooooooooooooo")
+#print(X.apply(lambda s: len(json.loads(s))))
+
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model = make_pipeline(StandardScaler(), LogisticRegression())
 
@@ -34,4 +35,3 @@ print("\nConfusion Matrix:")
 print(conf_matrix)
 print("\nClassification Report:")
 print(classification_rep) 
-"""
