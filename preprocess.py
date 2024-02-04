@@ -2,7 +2,7 @@ import pandas as pd
 import tiktoken
 import numpy as np
 
-def get_dataset():
+def get_raw_dataset():
     try:
         return pd.read_csv("raw_data.csv")
     except FileNotFoundError as e:
@@ -17,8 +17,6 @@ def tokenize_bytecode(bytecode):
             bytecode = str(bytecode)
 
         encoded_tokens = enc.encode(bytecode)
-        #decoded_bytecode = enc.decode(encoded_tokens)  
-
         return encoded_tokens
     except Exception as e:
         print(f"Error during tokenization: {e}")
@@ -31,22 +29,28 @@ def pad_arrays(array, max_length, padding_token):
         padded_array = array[:max_length]
     return padded_array
 
-if __name__ == "__main__":
+def expand_array(df):
+    max_length = 9021
+    padding_token = 0
+
+    df['encoded_tokens'] = df['bytecode'].apply(tokenize_bytecode)
+    # Pad the arrays
+    df['padded_arrays'] = df['encoded_tokens'].apply(lambda x: pad_arrays(x, max_length, padding_token))
+
+    padded_arrays = df.pop("padded_arrays")
+    tokens = pd.DataFrame(padded_arrays.tolist(), columns=[f"token_{i}" for i in range(max_length)])
+    df_expanded = pd.concat([df, tokens], axis=1)
+
+    return df_expanded
+
+def preprocess_data():
     try:
-        df = get_dataset()
-
-        df['encoded_tokens'] = df['bytecode'].apply(tokenize_bytecode)
-        max_length = 9021
-        padding_token = 0
-
-        # Pad the arrays
-        df['padded_arrays'] = df['encoded_tokens'].apply(lambda x: pad_arrays(x, max_length, padding_token))
-
-        padded_arrays = df.pop("padded_arrays")
-        tokens = pd.DataFrame(padded_arrays.tolist(), columns=[f"token_{i}" for i in range(9021)])
-        df_expanded = pd.concat([df, tokens], axis=1)
-
-        df_expanded.to_csv("data.csv", index=False)
-
+        raw_df = get_raw_dataset()
+        expanded_df = expand_array(raw_df)
+        expanded_df.to_csv("data.csv", index=False)
+        print("Data preprocessed and saved to data.csv")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    preprocess_data()
