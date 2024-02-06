@@ -48,7 +48,7 @@ def preprocess_data():
         raw_df = get_raw_dataset()
         expanded_df = expand_array(raw_df)
         expanded_df.to_csv("data.csv", index=False)
-        print("Data preprocessed and saved to data.csv")
+        
     except Exception as e:
         print(f"An error occurred: {e}")
 
